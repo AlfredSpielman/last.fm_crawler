@@ -18,7 +18,7 @@ all_pages = library_soup.findAll('li', {'class':'pagination-page'})[::-1][0].get
 
 data = []
 
-for page in range(1, 11): #int(all_pages)+1
+for page in range(1, int(all_pages)+1):
 
     lastfm = f'https://www.last.fm/user/{user}/library?page={page}'
 
