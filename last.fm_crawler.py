@@ -33,9 +33,9 @@ for page in range(1, int(all_pages)+1):
 
         Track = container.findAll('td', {'class': 'chartlist-name'})[0].get_text().strip('\n')
         Artist = container.findAll('td', {'class': 'chartlist-artist'})[0].get_text().strip('\n')
-        
+
         Timestamp = container.findAll('td', {'class': 'chartlist-timestamp chartlist-timestamp--lang-en'})[0].find('span')['title']
-        
+
         Date = DateParser(Timestamp)
         Time = TimeParser(Timestamp)
 

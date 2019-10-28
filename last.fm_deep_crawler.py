@@ -34,16 +34,16 @@ for page in range(1, 5):#int(all_pages)+1):
         # LIBRARY PART
         Track = container.findAll('td', {'class': 'chartlist-name'})[0].get_text().strip('\n')
         Artist = container.findAll('td', {'class': 'chartlist-artist'})[0].get_text().strip('\n')
-        
+
         Timestamp = container.findAll('td', {'class': 'chartlist-timestamp chartlist-timestamp--lang-en'})[0].find('span')['title']
-        
+
         Date = DateParser(Timestamp)
         Time = TimeParser(Timestamp)
 
         # TRACK DETAILS PART
         href = container.find_all('a', {'class':''})[0].get('href')
         v = f'https://www.last.fm{href}'
-        
+
         uClient = uReq(track_html)
         track_html_open = uClient.read()
         uClient.close()
@@ -52,8 +52,8 @@ for page in range(1, 5):#int(all_pages)+1):
 
         tag_list = track_soup.find_all('ul', {'class':'tags-list tags-list--global'})[0].find_all('li', {'class':'tag'})
         Tags = []
-        for i in range(0, len(tag_list)):
-            Tags.append(tag_list[i].get_text())
+        for i, value in enumerate(tag_list):
+            Tags.append(value.get_text())
 
         Length = track_soup.find_all('dd', {'class':'catalogue-metadata-description'})[0].get_text().strip('\n').strip(' ').strip('\n')
         Album = track_soup.find_all('h4', {'class':'source-album-name'})[0].get_text()
