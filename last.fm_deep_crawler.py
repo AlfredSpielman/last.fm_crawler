@@ -18,7 +18,7 @@ all_pages = library_soup.findAll('li', {'class':'pagination-page'})[::-1][0].get
 
 data = []
 
-for page in range(1, 5):#int(all_pages)+1):
+for page in range(1, 4): #int(all_pages)+1):
 
     lastfm = f'https://www.last.fm/user/{user}/library?page={page}'
 
@@ -42,7 +42,7 @@ for page in range(1, 5):#int(all_pages)+1):
 
         # TRACK DETAILS PART
         href = container.find_all('a', {'class':''})[0].get('href')
-        v = f'https://www.last.fm{href}'
+        track_html = f'https://www.last.fm{href}'
 
         uClient = uReq(track_html)
         track_html_open = uClient.read()
@@ -50,13 +50,26 @@ for page in range(1, 5):#int(all_pages)+1):
 
         track_soup = soup(track_html_open, 'html.parser')
 
-        tag_list = track_soup.find_all('ul', {'class':'tags-list tags-list--global'})[0].find_all('li', {'class':'tag'})
-        Tags = []
-        for i, value in enumerate(tag_list):
-            Tags.append(value.get_text())
+        # Tags
+        try:
+            tag_list = track_soup.find_all('ul', {'class':'tags-list tags-list--global'})[0].find_all('li', {'class':'tag'})
+            Tags = []
+            for i, value in enumerate(tag_list):
+                Tags.append(value.get_text())
+        except IndexError:
+            Tags = 'null'
 
-        Length = track_soup.find_all('dd', {'class':'catalogue-metadata-description'})[0].get_text().strip('\n').strip(' ').strip('\n')
-        Album = track_soup.find_all('h4', {'class':'source-album-name'})[0].get_text()
+        # Length
+        try:
+            Length = track_soup.find_all('dd', {'class':'catalogue-metadata-description'})[0].get_text().strip('\n').strip(' ').strip('\n')
+        except IndexError:
+            Length = 'null'
+
+        # Album        
+        try:
+            Album = track_soup.find_all('h4', {'class':'source-album-name'})[0].get_text()
+        except IndexError:
+            Album = 'null'
 
         # APPEND LIST
         data.append([Artist, Track, Date, Time, Tags, Length, Album])
